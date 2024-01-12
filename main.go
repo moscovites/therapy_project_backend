@@ -20,6 +20,9 @@ func loadDatabase() {
 	
 	database.Connect()
 	database.Database.AutoMigrate(&models.Waitlist{})
+	database.Database.AutoMigrate(&models.User{})
+	database.Database.AutoMigrate(&models.PatientProfile{})
+	database.Database.AutoMigrate(&models.TherapistProfile{})
 
 }
 
@@ -35,6 +38,17 @@ func serverApplication() {
 	router := gin.Default()
 	publicRoutes := router.Group("/waitlist")
 	publicRoutes.POST("/member", controllers.CreateWaitlistMember)
+
+	publicRoutes.POST("/register", controllers.Register)
+	publicRoutes.GET("verify-email/:code", controllers.VerifyEmail)
+	publicRoutes.POST("/login", controllers.Login)
+	publicRoutes.POST("/password-reset", controllers.PasswordReset)
+	publicRoutes.GET("/:password-reset-code", controllers.PasswordResetConfirm)
+	publicRoutes.POST("/:password-reset-code", controllers.CreateNewPassword)
+
+	onBoardingRoutes := router.Group("/onboarding")
+	onBoardingRoutes.POST("/patient", controllers.CreatePatientProfile)
+	onBoardingRoutes.POST("/therapist", controllers.CreateTherapistProfile)
 	
 	router.Run(":8000")
 	fmt.Println("server running on port 8000")

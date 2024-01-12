@@ -11,8 +11,7 @@ import (
 type User struct {
 	gorm.Model
 	ID uint `gorm: "primaryKey"`
-	FirstName string `gorm: "size:255" json: "firstName"`
-	LastName string `gorm: "size: 255" json: "lastName"`
+	UserType string `gorm: "not null;" json: "userType"`
 	PhoneNumber string `gorm: "size: 255" json: "phoneNumber"`
 	Email string `gorm: "size: 999; unique; not null" json: "email"`
 	Password string `gorm: "size: 255; not null;" json: "-"`

@@ -1,0 +1,14 @@
+user registration flow.
+
+USER DETAILS
+-type of therapy, individual, couple, corporate
+-gender- woman, man
+-age
+-sexuality
+-rel status
+-religious - rel status, denomination, christina therapist?
+-been in therapy before?
+-what lead you to consider therapy
+-expectations
+-current physical health
+-eating habits
