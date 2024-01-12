@@ -49,6 +49,10 @@ func serverApplication() {
 	onBoardingRoutes := router.Group("/onboarding")
 	onBoardingRoutes.POST("/patient", controllers.CreatePatientProfile)
 	onBoardingRoutes.POST("/therapist", controllers.CreateTherapistProfile)
+	onBoardingRoutes.PUT("/patient", controllers.UpdatePatientProfile)
+	onBoardingRoutes.PUT("/therapist", controllers.UpdateTherapistProfile)
+
+	
 	
 	router.Run(":8000")
 	fmt.Println("server running on port 8000")

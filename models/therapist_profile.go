@@ -2,10 +2,12 @@ package models
 
 import (
 	"core/database"
+	"gorm.io/gorm"
 
 )
 
 type TherapistProfile struct {
+	gorm.Model
 	UserID uint
 	User User `gorm: "foreignKey:UserID" json:user`
 	FirstName string `gorm: "not null;" json: "firstName"`
@@ -18,6 +20,15 @@ type TherapistProfile struct {
 	ReligiousDenomination bool `json: "religiousDenomination`
 }
 
+func FindTherapistProfileById(id uint) (TherapistProfile, error) {
+	var therapistProfile TherapistProfile
+	err := database.Database.Where("ID=?", id).Find(&therapistProfile).Error
+	if err != nil {
+		return TherapistProfile{}, err
+	}
+	return therapistProfile, nil
+}
+
 func (therapistProfile *TherapistProfile) Save() (*TherapistProfile, error) {
 	err := database.Database.Create(&therapistProfile).Error
 	if err != nil {
@@ -25,3 +36,12 @@ func (therapistProfile *TherapistProfile) Save() (*TherapistProfile, error) {
 	}
 	return therapistProfile, nil
 } 
+
+
+func (therapistProfile *TherapistProfile) Update(input *TherapistProfile) (*TherapistProfile, error) {
+	err := database.Database.Model(&therapistProfile).Updates(input).Error
+	if err != nil {
+		return nil, err
+	}
+	return therapistProfile, nil
+}

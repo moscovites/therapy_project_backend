@@ -22,10 +22,27 @@ type PatientProfile struct {
 	BeenInTherapyBefore bool `json: "beenInTherapyBefore"`	
 }
 
+func FindProfileById(id uint) (PatientProfile, error) {
+	var patientProfile PatientProfile
+	err := database.Database.Where("ID=?", id).Find(&patientProfile).Error
+	if err != nil {
+		return PatientProfile{}, err
+	}
+	return patientProfile, nil
+}
+
 func (patientProfile * PatientProfile) Save() (*PatientProfile, error) {
 
 	err := database.Database.Create(&patientProfile).Error
 
+	if err != nil {
+		return nil, err
+	}
+	return patientProfile, nil
+}
+
+func (patientProfile * PatientProfile) Update(input *PatientProfile) (*PatientProfile, error) {
+	err := database.Database.Model(&patientProfile).Updates(input).Error
 	if err != nil {
 		return nil, err
 	}
