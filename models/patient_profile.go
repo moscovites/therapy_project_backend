@@ -12,13 +12,12 @@ type PatientProfile struct {
 	UserID uint
 	User User `gorm: "foreignKey:UserID" json:user`
 	TherapyType string `json: "therapyType"`
-	Name string `gorm: "size:255" json: "firstName"`
-	Age int `json: "age"`
+	Age string `json: "age"`
 	Gender string `json: "gender"`
-	Sexuality string `json: "sexuality"`
 	RelationshipStatus string `json: "relationshipStatus"`
 	Religious bool `json: "religious`
-	ReligiousDenomination bool `json: "religiousDenomination`
+	ReligiousDenomination string `json: "religiousDenomination`
+	ConnectWithReligiousTherapist bool `json: "connectWithReligiousTherapist`
 	BeenInTherapyBefore bool `json: "beenInTherapyBefore"`	
 }
 

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-contrib/cors"
 	"core/database"
 	"core/models"
 	"fmt"
@@ -35,7 +36,12 @@ func loadEnv() {
 }
 
 func serverApplication() {
-	router := gin.Default()
+    router := gin.Default()
+
+    // CORS middleware
+    router.Use(cors.Default())
+
+    
 	publicRoutes := router.Group("/waitlist")
 	publicRoutes.POST("/member", controllers.CreateWaitlistMember)
 
@@ -47,6 +53,7 @@ func serverApplication() {
 	publicRoutes.POST("/:password-reset-code", controllers.CreateNewPassword)
 
 	onBoardingRoutes := router.Group("/onboarding")
+
 	onBoardingRoutes.POST("/patient", controllers.CreatePatientProfile)
 	onBoardingRoutes.POST("/therapist", controllers.CreateTherapistProfile)
 	onBoardingRoutes.PUT("/patient", controllers.UpdatePatientProfile)

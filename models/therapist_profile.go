@@ -17,7 +17,7 @@ type TherapistProfile struct {
 	Gender string `gorm: "not null;" json: "gender"`
 	Sexuality string `json: "sexuality"`
 	Religious bool `json: "religious`
-	ReligiousDenomination bool `json: "religiousDenomination`
+	ReligiousDenomination string `json: "religiousDenomination`
 }
 
 func FindTherapistProfileById(id uint) (TherapistProfile, error) {

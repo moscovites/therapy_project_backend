@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"core/utils"
+	"fmt"
 )
 
 func CreateTherapistProfile(context *gin.Context) {
@@ -19,9 +20,10 @@ func CreateTherapistProfile(context *gin.Context) {
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "User does not exist"})
 	}
+	fmt.Println("input", input)
 
 	savedProfile, err := input.Save()
-
+	fmt.Println("saved profile", savedProfile)
 	context.JSON(http.StatusOK, gin.H{"data": savedProfile})
 	
 }
