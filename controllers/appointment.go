@@ -2,33 +2,31 @@ package controllers
 
 import (
 	"core/models"
+	"core/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"core/utils"
 )
 
-func CreatePatientProfile(context *gin.Context) {
-	var input models.PatientProfile
+
+func CreateAppointment(context *gin.Context) {
+	var input models.Appointment
 	if err := context.ShouldBindJSON(&input); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	patientId := input.UserID
-	_, err := models.FindUserById(patientId)
+	savedAppointment, err := input.Save()
+
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": "User does not exist"})
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
-	savedProfile, err := input.Save()
-	
-
-	context.JSON(http.StatusOK, gin.H{"data": savedProfile})
+	context.JSON(http.StatusOK, gin.H{"data": savedAppointment})
 	
 }
 
-func UpdatePatientProfile(context *gin.Context) {
-	var input models.PatientProfile
+func UpdateAppointment(context *gin.Context) {
+	var input models.Appointment
 
 	if err := context.ShouldBindJSON(&input); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -40,18 +38,18 @@ func UpdatePatientProfile(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	existingProfile, err := models.FindProfileById(input.ID)
+	existingAppointment, err := models.FindAppointmentById(input.ID)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
         return
 	}
 	
-	updatedProfile, err := existingProfile.Update(&input)
+	updatedAppointment, err := existingAppointment.Update(&input)
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"data": updatedProfile})
+	context.JSON(http.StatusOK, gin.H{"data": updatedAppointment})
 }

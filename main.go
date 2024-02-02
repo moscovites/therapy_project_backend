@@ -24,6 +24,7 @@ func loadDatabase() {
 	database.Database.AutoMigrate(&models.User{})
 	database.Database.AutoMigrate(&models.PatientProfile{})
 	database.Database.AutoMigrate(&models.TherapistProfile{})
+	database.Database.AutoMigrate(&models.Appointment{})
 
 }
 
@@ -40,6 +41,14 @@ func serverApplication() {
 
     // CORS middleware
     router.Use(cors.Default())
+
+	router.POST("/apointment", controllers.CreateAppointment)
+	router.PUT("/apointment", controllers.UpdateAppointment)
+
+	// router.GET("/ws", controllers.HandleConnections)
+
+	// // Start a goroutine to handle incoming messages and broadcast them to clients
+	// go controllers.HandleMessages()
 
     
 	publicRoutes := router.Group("/waitlist")
@@ -58,8 +67,6 @@ func serverApplication() {
 	onBoardingRoutes.POST("/therapist", controllers.CreateTherapistProfile)
 	onBoardingRoutes.PUT("/patient", controllers.UpdatePatientProfile)
 	onBoardingRoutes.PUT("/therapist", controllers.UpdateTherapistProfile)
-
-	
 	
 	router.Run(":8000")
 	fmt.Println("server running on port 8000")

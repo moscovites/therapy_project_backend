@@ -7,6 +7,8 @@ import (
 	"gorm.io/gorm"
 )
 
+// what do you have for me so that i want to come here and make 
+
 type PatientProfile struct {
 	gorm.Model
 	UserID uint
@@ -37,6 +39,7 @@ func (patientProfile * PatientProfile) Save() (*PatientProfile, error) {
 	if err != nil {
 		return nil, err
 	}
+	
 	return patientProfile, nil
 }
 
