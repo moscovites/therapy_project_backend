@@ -1,14 +1,14 @@
-user registration flow.
+1. update appointment by adding video call id or location --- done
+2. fetch appointment details for both profiles ---done
+3. routing on patient dashboard --- done
+4 include feedback modal for all forms(dashboard) ---done
+// 2 hours
 
-USER DETAILS
--type of therapy, individual, couple, corporate
--gender- woman, man
--age
--sexuality
--rel status
--religious - rel status, denomination, christina therapist?
--been in therapy before?
--what lead you to consider therapy
--expectations
--current physical health
--eating habits
+
+5. make onboarding 100% ready ----done
+6. make appointments(creating and joining meetings) and profiles(details edittable) 100% ready
+6. therapy session logging
+7. chat application
+8. AI article suggestions
+9. payments
+10. therapist recommendation system

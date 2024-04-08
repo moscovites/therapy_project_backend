@@ -13,10 +13,12 @@ type Appointment struct {
 	TherapistID uint
 	Patient User `gorm: "foreignKey:PatientID" json:patient`
 	Therapist User `gorm: "foreignKey:TherapistID" json:therapist`
-	TherapyType string `json: "therapyType"`
+	// TherapyType string `json: "therapyType"`
+	Date   string `json: "date"`
 	StartTime   string `json: "startTime"`
 	EndTime     string `json: "endTime"`
 	Location    string `json: "location"`
+	AddressOrId string `json: "addressOrId"`
 }
 
 func FindAppointmentById(id uint) (Appointment, error) {
@@ -45,3 +47,12 @@ func (appointment * Appointment) Update(input *Appointment) (*Appointment, error
 	}
 	return appointment, nil
 }
+
+func AllAppointments() ([]Appointment, error) {
+    var appointments []Appointment
+    if err := database.Database.Preload("Patient").Preload("Therapist").Find(&appointments).Error; err != nil {
+        return nil, err
+    }
+    return appointments, nil
+}
+

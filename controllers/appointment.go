@@ -5,6 +5,7 @@ import (
 	"core/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"log"
 )
 
 
@@ -52,4 +53,16 @@ func UpdateAppointment(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, gin.H{"data": updatedAppointment})
+}
+
+
+func GetAllAppointments(context *gin.Context) {
+    appointments, err := models.AllAppointments()
+    if err != nil {
+		log.Println("Error fetching appointments:", err)
+        context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    context.JSON(http.StatusOK, gin.H{"data": appointments})
 }

@@ -44,6 +44,7 @@ func serverApplication() {
 
 	router.POST("/apointment", controllers.CreateAppointment)
 	router.PUT("/apointment", controllers.UpdateAppointment)
+	router.GET("/apointment", controllers.GetAllAppointments)
 
 	// router.GET("/ws", controllers.HandleConnections)
 
