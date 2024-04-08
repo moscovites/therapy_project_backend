@@ -1,24 +1,25 @@
 package main
 
 import (
-	"github.com/gin-contrib/cors"
+	"core/controllers"
 	"core/database"
 	"core/models"
 	"fmt"
-	"github.com/joho/godotenv"
 	"log"
+
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"core/controllers"
+	"github.com/joho/godotenv"
 )
 
-func main () {
+func main() {
 	loadEnv()
 	loadDatabase()
 	serverApplication()
 }
 
 func loadDatabase() {
-	
+
 	database.Connect()
 	database.Database.AutoMigrate(&models.Waitlist{})
 	database.Database.AutoMigrate(&models.User{})
@@ -33,14 +34,14 @@ func loadEnv() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-	
+
 }
 
 func serverApplication() {
-    router := gin.Default()
+	router := gin.Default()
 
-    // CORS middleware
-    router.Use(cors.Default())
+	// CORS middleware
+	router.Use(cors.Default())
 
 	router.POST("/apointment", controllers.CreateAppointment)
 	router.PUT("/apointment", controllers.UpdateAppointment)
@@ -51,7 +52,6 @@ func serverApplication() {
 	// // Start a goroutine to handle incoming messages and broadcast them to clients
 	// go controllers.HandleMessages()
 
-    
 	publicRoutes := router.Group("/waitlist")
 	publicRoutes.POST("/member", controllers.CreateWaitlistMember)
 
@@ -68,7 +68,7 @@ func serverApplication() {
 	onBoardingRoutes.POST("/therapist", controllers.CreateTherapistProfile)
 	onBoardingRoutes.PUT("/patient", controllers.UpdatePatientProfile)
 	onBoardingRoutes.PUT("/therapist", controllers.UpdateTherapistProfile)
-	
+
 	router.Run(":8000")
 	fmt.Println("server running on port 8000")
 }
