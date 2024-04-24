@@ -1,23 +1,23 @@
 package models
 
 import (
-	"gorm.io/gorm"
 	"core/database"
-	"golang.org/x/crypto/bcrypt"
 	"fmt"
-)
 
+	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
+)
 
 type User struct {
 	gorm.Model
-	ID uint `gorm: "primaryKey"`
-	UserType string `gorm: "not null;" json: "userType"`
-	PhoneNumber string `gorm: "size: 255" json: "phoneNumber"`
-	Email string `gorm: "size: 999; unique; not null" json: "email"`
-	Password string `gorm: "size: 255; not null;" json: "-"`
-	VerificationCode string `gorm: "size: 8;" json: "verification_code"`
+	ID                uint   `gorm: "primaryKey"`
+	UserType          string `gorm: "size: 255" "not null;" json: "userType"`
+	PhoneNumber       string `gorm: "size: 255" json: "phoneNumber"`
+	Email             string `gorm: "size: 999; unique; not null" json: "email"`
+	Password          string `gorm: "size: 255; not null;" json: "-"`
+	VerificationCode  string `gorm: "size: 8;" json: "verification_code"`
 	ResetPasswordCode string `gorm: "size: 8;" json: "passwordResetCode"`
-	IsVerified bool `gorm: "default:false"`
+	IsVerified        bool   `gorm: "default:false"`
 }
 
 func (user *User) BeforeSave(*gorm.DB) error {
@@ -25,11 +25,11 @@ func (user *User) BeforeSave(*gorm.DB) error {
 
 		passwordHash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 
-	if err != nil {
-		return err
+		if err != nil {
+			return err
+		}
+		user.Password = string(passwordHash)
 	}
-	user.Password = string(passwordHash)
-}
 	return nil
 }
 
@@ -76,10 +76,10 @@ func (user *User) UpdatePassword(input string) (*User, error) {
 	if err != nil {
 		return nil, err
 	}
-	
-	if err := database.Database.Model(&user).Update("password", passwordHash); err != nil  {
+
+	if err := database.Database.Model(&user).Update("password", passwordHash); err != nil {
 		return &User{}, nil
 	}
-	
+
 	return user, nil
 }

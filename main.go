@@ -3,6 +3,7 @@ package main
 import (
 	"core/controllers"
 	"core/database"
+	"core/middleware"
 	"core/models"
 	"fmt"
 	"log"
@@ -43,9 +44,14 @@ func serverApplication() {
 	// CORS middleware
 	router.Use(cors.Default())
 
-	router.POST("/apointment", controllers.CreateAppointment)
-	router.PUT("/apointment", controllers.UpdateAppointment)
-	router.GET("/apointment", controllers.GetAllAppointments)
+	router.POST("/login", controllers.Login)
+
+	protectedRoutes := router.Group("/user")
+	protectedRoutes.Use(middleware.JWTAuthMiddleware())
+
+	protectedRoutes.POST("/apointment", controllers.CreateAppointment)
+	protectedRoutes.PUT("/apointment", controllers.UpdateAppointment)
+	protectedRoutes.GET("/apointment", controllers.GetAllAppointments)
 
 	// router.GET("/ws", controllers.HandleConnections)
 
@@ -57,7 +63,7 @@ func serverApplication() {
 
 	publicRoutes.POST("/register", controllers.Register)
 	publicRoutes.GET("verify-email/:code", controllers.VerifyEmail)
-	publicRoutes.POST("/login", controllers.Login)
+
 	publicRoutes.POST("/password-reset", controllers.PasswordReset)
 	publicRoutes.GET("/:password-reset-code", controllers.PasswordResetConfirm)
 	publicRoutes.POST("/:password-reset-code", controllers.CreateNewPassword)
