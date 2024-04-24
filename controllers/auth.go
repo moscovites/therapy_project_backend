@@ -1,12 +1,13 @@
 package controllers
 
 import (
-	"core/models"
-	"github.com/gin-gonic/gin"
-	"net/http"
-	"core/utils"
 	"core/database"
+	"core/models"
+	"core/utils"
 	"fmt"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Register(context *gin.Context) {
@@ -25,18 +26,18 @@ func Register(context *gin.Context) {
 
 	user := models.User{
 		Email: input.Email,
-		
+
 		VerificationCode: verificationCode,
-		Password: input.Password,
+		Password:         input.Password,
 	}
 	savedUser, err := user.Save()
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	
+
 	utils.SendVerificationEmail(user.Email, user.VerificationCode)
-		
+
 	context.JSON(http.StatusCreated, gin.H{"message": "A verification code has been sent to the procided email address.", "created user": savedUser})
 }
 
@@ -52,7 +53,7 @@ func VerifyEmail(context *gin.Context) {
 	verifiedUser.VerificationCode = ""
 
 	database.Database.Save(verifiedUser)
-	context.JSON(http.StatusOK, gin.H{"message": "Email verification successful.", "verifiedUser": verifiedUser})	
+	context.JSON(http.StatusOK, gin.H{"message": "Email verification successful.", "verifiedUser": verifiedUser})
 }
 
 func Login(context *gin.Context) {
@@ -77,7 +78,7 @@ func Login(context *gin.Context) {
 		return
 
 	}
-	
+
 	context.JSON(http.StatusOK, gin.H{"jwt": jwt})
 }
 
@@ -93,7 +94,6 @@ func PasswordReset(context *gin.Context) {
 	userEmail := input.Email
 	fmt.Println("email entered", userEmail)
 
-
 	user, err := utils.FindUserByEmail(userEmail)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -102,7 +102,7 @@ func PasswordReset(context *gin.Context) {
 	user.ResetPasswordCode = passwordResetCode
 	database.Database.Save(user)
 	utils.SendPasswordResetCode(userEmail, passwordResetCode)
-	context.JSON(http.StatusOK, gin.H{"message": "Password reset code sent to your email"})	  
+	context.JSON(http.StatusOK, gin.H{"message": "Password reset code sent to your email"})
 }
 
 func PasswordResetConfirm(context *gin.Context) {
@@ -141,6 +141,4 @@ func CreateNewPassword(context *gin.Context) {
 	}
 	context.JSON(http.StatusOK, gin.H{"updated password": updatedPassword})
 
-
 }
-
