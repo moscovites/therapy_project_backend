@@ -25,8 +25,8 @@ func Register(context *gin.Context) {
 	verificationCode := utils.GenerateVerificationCode()
 
 	user := models.User{
-		Email: input.Email,
-
+		Email:            input.Email,
+		UserType:         input.UserType,
 		VerificationCode: verificationCode,
 		Password:         input.Password,
 	}
